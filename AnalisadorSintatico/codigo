@@ -1,7 +1,0 @@
-program 
-var  a;integer;
-	
-begin 
-
-write();
-end
