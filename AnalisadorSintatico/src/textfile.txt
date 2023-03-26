@@ -2,8 +2,7 @@ program teste;
 var 
 value : integer;
 valor1: integer;
-valor2: real;
 procedure tipo (get,close:integer)
 begin
-read(1.2,2);
+read(12,2);
 end
