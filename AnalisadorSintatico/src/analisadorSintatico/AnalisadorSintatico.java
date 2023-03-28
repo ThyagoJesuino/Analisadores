@@ -99,7 +99,7 @@ public class AnalisadorSintatico {
 			//System.out.println("passouparam2*");
 			getToken(i++);
 		}else if(!tokens.get(i).getValor().equals(")")){
-			System.out.println(") esperado! 1");
+			System.out.println(") esperado! ");
 		}else{
 			empty();
 		}
@@ -249,7 +249,7 @@ public class AnalisadorSintatico {
 			}if(tokens.get(i).getValor().equals(")")){
 				getToken(i++);
 			}else if(!tokens.get(i).getValor().equals(")")){
-				System.out.println(") esperado! 5");
+				System.out.println(") esperado! ");
 			}
 		}
 	}
@@ -333,7 +333,7 @@ public class AnalisadorSintatico {
 			if(tokens.get(i).getValor().equals(")")){
 				getToken(i++);
 			}else if(!tokens.get(i).getValor().equals(")")){
-				System.out.println(") esperado! 7");
+				System.out.println(") esperado! ");
 			}
 		}
 	}
@@ -435,7 +435,7 @@ public class AnalisadorSintatico {
 				}if(tokens.get(i).getValor().equals(")")){
 					getToken(i++);
 				}else if(!tokens.get(i).getValor().equals(")")){
-					System.out.println(") esperado! 11");
+					System.out.println(") esperado! ");
 				}
 			}
 		} else if(tokens.get(i).getValor().equals("while")){
