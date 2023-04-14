@@ -1,0 +1,6 @@
+program teste;
+var
+value : integer;
+valor1: integer;
+write(1,2);
+END
