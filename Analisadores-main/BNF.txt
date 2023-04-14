@@ -26,7 +26,6 @@
 <sentencas> end | repeat <sentencas> until ( <condicao> ) | while ( <condicao> ) do begin <sentencas> end | if
 ( <condicao> ) then begin <sentencas> end <pfalsa> | <id> := <expressao> | <chamada_procedimento>
 <chamada_procedimento> ::= <id> <argumentos>
-BNF Bag - Roberta Vilhena Vieira Lopes
 <argumentos> ::= ( <lista_arg> ) | <empty>
 <lista_arg> ::= <expressao> <cont_lista_arg>
 <cont_lista_arg> ::= , <lista_arg> | <empty>
