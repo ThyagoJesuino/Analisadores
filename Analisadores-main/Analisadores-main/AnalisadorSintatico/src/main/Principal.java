@@ -12,7 +12,7 @@ public class Principal {
 		LinkedList<Token> tokens = null;
 		try {
 
-			tokens = AnalisadorLexico.parceLexico("C:/Users/braba/OneDrive/Área de Trabalho/AnalisadorSintaticoD-master/AnalisadorSintaticoD-master/src/textfile.txt");
+			tokens = AnalisadorLexico.parceLexico("C:/Users/braba/OneDrive/Área de Trabalho/Ufl/Analisadores-main/Analisadores-main/AnalisadorSintatico/src/textfile.txt");
 
 		} catch (Exception e) {
 			e.printStackTrace();

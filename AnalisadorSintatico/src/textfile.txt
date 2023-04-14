@@ -1,8 +1,0 @@
-program teste;
-var 
-value : integer;
-valor1: integer;
-procedure tipo (get,close:integer)
-begin
-read(12,2);
-end

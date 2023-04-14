@@ -12,7 +12,7 @@ public class AnalisadorLexico {
 	public final static char LINE_TOKEN = '�';
 
 	static String RESERVED_WORD[] = { "begin", "if" ,"end", "integer", "{integer}", "real",  "{real}", "program", "var", "array", "it", "then", "of",
-			"repeat", "until", "read", "write", "do", "not", "or", "to", "div", "mod", "end", "$", "procedure" };
+			"repeat", "until", "read", "write", "do", "not", "or", "to", "div", "mod", "end", "$", "procedure", "function"};
 	static String[] SYMBOLS = { "(", ")", "{", "}", "'", ";", "=", ":", ",", "." };
 	static String[] OPERATORS = { "+", "-", "*", "/", "//"};
 	static String[] OPERATORS_COMP = { ">=", "<=", "&&", "||", "==" };

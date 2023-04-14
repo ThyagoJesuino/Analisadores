@@ -1,0 +1,9 @@
+program teste;
+var 
+value: integer;
+valor1: integer;
+function escrever(x,y,z:integer) : integer;
+write(x,y,z)
+end
+read(1,2)
+END

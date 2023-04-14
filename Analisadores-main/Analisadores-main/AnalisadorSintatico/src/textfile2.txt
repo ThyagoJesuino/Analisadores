@@ -1,0 +1,9 @@
+program teste;
+var 
+value: integer;
+valor1: integer;
+procedure escrever(x, y, z : integer);
+write(x,y,z)
+end
+read(x,y,z)
+END

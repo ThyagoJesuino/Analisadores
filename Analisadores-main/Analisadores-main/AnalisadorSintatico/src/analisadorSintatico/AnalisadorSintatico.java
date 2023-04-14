@@ -8,13 +8,14 @@ public class AnalisadorSintatico {
 	boolean testa = false;
 	boolean operador = false;
 	int aux;
+	int verificar = 0;
 	private LinkedList<Token> tokens;
 
 	public void result() {
 		if (testa) {
 			System.out.println("Analise sintatica correta");
 		} else {
-			System.out.println("Analise sintatica incorreta");
+			System.out.println("Analise sintatica incorreta verifique sua entrada;");
 		}
 	}
 
@@ -33,6 +34,7 @@ public class AnalisadorSintatico {
 		this.aux = i;
 	}
 	public void empty(){
+		//System.out.println("passouempty" + "linha =" + tokens.get(i).getLinha());
 		return;
 	}
 	public void prog() {
@@ -43,25 +45,22 @@ public class AnalisadorSintatico {
 			if (tokens.get(i).getValor().equals(";")) {
 				//System.out.println("passou2");
 				getToken(i++);
-				corpo();
+				declara();
+				rotina();
+				sentencas();
+				if(tokens.get(i).getValor().equals("END")){
+					testa = true;
+				}
 			}
 		}
 	}
-	public void corpo(){
+	public void declara(){
 		if (tokens.get(i).getValor().equals("var")){
 			//System.out.println("passoucorpo*");
 			getToken(i++);
 			dec_var();
-			rotina();
-			if(tokens.get(i).getValor().equals("begin")){
-				//System.out.println("passoubegin*");
-				getToken(i++);
-				sentencas();
-			}
-			if(tokens.get(i).getValor().equals("end")){
-				testa = true;
-			}
-
+		}else{
+			empty();
 		}
 	}
 	public void rotina(){
@@ -69,7 +68,7 @@ public class AnalisadorSintatico {
 			//System.out.println("passourotin*");
 			getToken(i++);
 			procedimento();
-		}else if(tokens.get(i).getValor().equals("function")){
+		}if(tokens.get(i).getValor().equals("function")){
 			getToken(i++);
 			funcao();
 		}else{
@@ -82,10 +81,16 @@ public class AnalisadorSintatico {
 		parametros();
 		if(tokens.get(i).getValor().equals(";")){
 			getToken(i++);
-			corpo();
-			if(tokens.get(i).getValor().equals(";")){
+			declara();
+			rotina();
+			sentencas();
+			if(tokens.get(i).getValor().equals("end")){
 				getToken(i++);
-					rotina();
+				if(tokens.get(i).getValor().equals(";")){
+					System.out.println("aa");
+					getToken(i++);
+						rotina();
+					}
 				}
 			}
 		}
@@ -94,13 +99,14 @@ public class AnalisadorSintatico {
 			//System.out.println("passouparam*");
 			getToken(i++);
 			listParam();
+			if(tokens.get(i).getValor().equals(")")){
+				//System.out.println("passouparam2*");
+				getToken(i++);
+			}else if(!tokens.get(i).getValor().equals(")")){
+				System.out.println(") esperado! " + "linha = " + tokens.get(i).getLinha());
+			}
 		}
-		if(tokens.get(i).getValor().equals(")")){
-			//System.out.println("passouparam2*");
-			getToken(i++);
-		}else if(!tokens.get(i).getValor().equals(")")){
-			System.out.println(") esperado! ");
-		}else{
+		else{
 			empty();
 		}
 	}
@@ -110,25 +116,28 @@ public class AnalisadorSintatico {
 				//System.out.println("passoulistparam*");
 				getToken(i++);
 				tipo();
-				if(tokens.get(i).getValor().equals(";")){
-					getToken(i++);
-					listParam();
-				}else{
-					empty();
-				}
-			}else{
+				contLitParam();
+			}
+	}
+	public void contLitParam(){
+		if(tokens.get(i).getValor().equals(";")){
+			getToken(i++);
+			listParam();
+		}else{
 			empty();
 		}
 	}
 	public void listId(){
 		id();
+		contLisId();
+	}
+	public void contLisId(){
 		if(tokens.get(i).getValor().equals(",")){
 			getToken(i++);
 			listId();
 		}else{
 			empty();
 		}
-
 	}
 	public void funcao(){
 		id();
@@ -136,22 +145,34 @@ public class AnalisadorSintatico {
 		if(tokens.get(i).getValor().equals(":")){
 			getToken(i++);
 			tipo();
+			System.out.println("lista = " + tokens.get(i).getValor());
 			if(tokens.get(i).getValor().equals(";")){
 				getToken(i++);
-				corpo();
-				if(tokens.get(i).getValor().equals(";")){
+				declara();
+				rotina();
+				sentencas();
+				if(tokens.get(i).getValor().equals("end")){
 					getToken(i++);
-					rotina();
+					if(tokens.get(i).getValor().equals(";")){
+						System.out.println("aa1");
+						getToken(i++);
+						rotina();
+					}
 				}
 			}
-		}
-
+		}	
 	}
 	public void sentencas(){
 		cmd();
 		mSentencas();
 	}
 	public void mSentencas(){
+		if(tokens.get(i).getValor().equals(";")){
+			getToken(i++);
+			contMSent();
+		}
+	}
+	public void contMSent(){
 		if(tokens.get(i).getValor().equals(";")){
 			getToken(i++);
 			sentencas();
@@ -191,7 +212,7 @@ public class AnalisadorSintatico {
 			}if(tokens.get(i).getValor().equals(")")){
 				getToken(i++);
 			}else if(!tokens.get(i).getValor().equals(")")){
-				System.out.println(") esperado! ");
+				System.out.println(") esperado! "+ "linha = " + tokens.get(i).getLinha());
 			}
 			operador = true;
 		}else if(tokens.get(i).getTipo().equals(Token.IDENTIFIER_TOKEN)){
@@ -209,7 +230,7 @@ public class AnalisadorSintatico {
 			if(tokens.get(i).getValor().equals(")")){
 				getToken(i++);
 			}else if(!tokens.get(i).getValor().equals(")")){
-				System.out.println(") esperado! ");
+				System.out.println(") esperado! "+ "linha = " + tokens.get(i).getLinha());
 			}
 		}else{
 			empty();
@@ -240,7 +261,7 @@ public class AnalisadorSintatico {
 			}if(tokens.get(i).getValor().equals(")")){
 				getToken(i++);
 			}else if(!tokens.get(i).getValor().equals(")")){
-				System.out.println(") esperado! ");
+				System.out.println(") esperado! "+ "linha = " + tokens.get(i).getLinha());
 			}
 		}else if(tokens.get(i).getValor().equals("pos")){
 			if(tokens.get(i).getValor().equals("(")){
@@ -249,7 +270,7 @@ public class AnalisadorSintatico {
 			}if(tokens.get(i).getValor().equals(")")){
 				getToken(i++);
 			}else if(!tokens.get(i).getValor().equals(")")){
-				System.out.println(") esperado! ");
+				System.out.println(") esperado! "+ "linha = " + tokens.get(i).getLinha());
 			}
 		}
 	}
@@ -263,7 +284,7 @@ public class AnalisadorSintatico {
 			if(tokens.get(i).getValor().equals("}")){
 				getToken(i++);
 			}else if(!tokens.get(i).getValor().equals("}")){
-				System.out.println("} esperado! ");
+				System.out.println("} esperado! "+ "linha = " + tokens.get(i).getLinha());
 			}			
 		}
 		else if(tokens.get(i).getValor().equals("{")){
@@ -273,7 +294,7 @@ public class AnalisadorSintatico {
 			if(tokens.get(i).getValor().equals("}")){
 				getToken(i++);
 			}else if(!tokens.get(i).getValor().equals("}")){
-				System.out.println("} esperado! ");
+				System.out.println("} esperado! "+ "linha = " + tokens.get(i).getLinha());
 			}
 		}
 	}
@@ -333,7 +354,7 @@ public class AnalisadorSintatico {
 			if(tokens.get(i).getValor().equals(")")){
 				getToken(i++);
 			}else if(!tokens.get(i).getValor().equals(")")){
-				System.out.println(") esperado! ");
+				System.out.println(") esperado! "+ "linha = " + tokens.get(i).getLinha());
 			}
 		}
 	}
@@ -344,7 +365,7 @@ public class AnalisadorSintatico {
 			if(tokens.get(i).getValor().equals("end")){
 				getToken(i++);
 			}else if(!tokens.get(i).getValor().equals("end")){
-				System.out.println("end esperado! ");
+				System.out.println("end esperado! "+ "linha = " + tokens.get(i).getLinha());
 			}
 		}else{
 			empty();
@@ -389,7 +410,7 @@ public class AnalisadorSintatico {
 			}if(tokens.get(i).getValor().equals(")")){
 				getToken(i++);
 			}else if(!tokens.get(i).getValor().equals(")")){
-				System.out.println(") esperado! ");
+				System.out.println(") esperado! "+ "linha = " + tokens.get(i).getLinha());
 			}
 		}
 		else if (tokens.get(i).getValor().equals("write")) {
@@ -400,7 +421,7 @@ public class AnalisadorSintatico {
 			}if(tokens.get(i).getValor().equals(")")){
 				getToken(i++);
 			}else if(!tokens.get(i).getValor().equals(")")){
-				System.out.println(") esperado! ");
+				System.out.println(") esperado! "+ "linha = " + tokens.get(i).getLinha());
 			}
 		}
 		else if(tokens.get(i).getValor().equals("for")){
@@ -418,7 +439,7 @@ public class AnalisadorSintatico {
 						if(tokens.get(i).getValor().equals("end")){
 							getToken(i++);
 						}else if(!tokens.get(i).getValor().equals("end")){
-							System.out.println("end esperado! ");
+							System.out.println("end esperado! "+ "linha = " + tokens.get(i).getLinha());
 						}
 					}
 				}
@@ -435,7 +456,7 @@ public class AnalisadorSintatico {
 				}if(tokens.get(i).getValor().equals(")")){
 					getToken(i++);
 				}else if(!tokens.get(i).getValor().equals(")")){
-					System.out.println(") esperado! ");
+					System.out.println(") esperado! "+ "linha = " + tokens.get(i).getLinha());
 				}
 			}
 		} else if(tokens.get(i).getValor().equals("while")){
@@ -446,14 +467,14 @@ public class AnalisadorSintatico {
 			}if(tokens.get(i).getValor().equals(")")){
 				getToken(i++);
 			}else if(!tokens.get(i).getValor().equals(")")){
-				System.out.println(") esperado! ");
+				System.out.println(") esperado! "+ "linha = " + tokens.get(i).getLinha());
 			}if(tokens.get(i).getValor().equals("do begin")){
 				getToken(i++);
 				sentencas();
 				if(tokens.get(i).getValor().equals("end")){
 					getToken(i++);
 				}else if(!tokens.get(i).getValor().equals("end")){
-					System.out.println("end esperado! ");
+					System.out.println("end esperado! "+ "linha = " + tokens.get(i).getLinha());
 				}
 			}
 		}else if(tokens.get(i).getValor().equals("if")){
@@ -471,7 +492,7 @@ public class AnalisadorSintatico {
 				if(tokens.get(i).getValor().equals("end")){
 					getToken(i++);
 				}else if(!tokens.get(i).getValor().equals("end")){
-					System.out.println("end esperado! ");
+					System.out.println("end esperado! "+ "linha = " + tokens.get(i).getLinha());
 				}
 			}
 		}
@@ -516,7 +537,7 @@ public class AnalisadorSintatico {
 					empty();
 				}
 			} else {
-				System.out.println(": esperado! ");
+				System.out.println(": esperado! " + "linha =" + tokens.get(i).getLinha());
 			}
 		}
 		else{
