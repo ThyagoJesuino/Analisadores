@@ -1,0 +1,11 @@
+program teste;
+var
+valor: integer;
+valor1: integer;
+write (1,2);
+x := U ({1,2},{2,6});
+y := ⊆ ({1,2},{2,6});
+w := ⊂ ({1,2},{2,6});
+z := ∩ ({1,2},{2,6});
+j := pos(152)
+END
